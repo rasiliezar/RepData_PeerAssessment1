@@ -21,95 +21,253 @@ The dataset is stored in a comma-sepa
   
 ###1.2 Read the data
 firts we red the data in to r. Meke sure that the file is in de work directory.
-```{r leerDAta, echo = TRUE}
+
+```r
   ##setwd("~/")
   data <- read.csv("activity.csv", header = T, sep = ",")
 ```
 
+```
+## Warning in file(file, "rt"): cannot open file 'activity.csv': No such file
+## or directory
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
 this is a summary of the data: 
-```{r resumenDAta, echo = TRUE}
+
+```r
   summary(data)
+```
+
+```
+## Error in object[[i]]: object of type 'closure' is not subsettable
 ```
 ##2. What is mean total number of steps taken per day?
 create a vector call "suma" for the histogram
-```{r sumaDAta, echo = TRUE}
+
+```r
   suma <- tapply(data$steps, data$date, sum, na.rm=T)
 ```
+
+```
+## Error in data$date: object of type 'closure' is not subsettable
+```
 Histogram:  
-```{r hitsuma, echo = TRUE}
+
+```r
   echo = TRUE
   hist(suma, xlab = "sum(steps per day)", main = "histogram of steps per day")
-```  
+```
+
+```
+## Error in hist(suma, xlab = "sum(steps per day)", main = "histogram of steps per day"): object 'suma' not found
+```
 
 The mean for the data set is:
-```{r avgsuma, echo = TRUE}
+
+```r
     round(mean(suma))
 ```
+
+```
+## Error in mean(suma): object 'suma' not found
+```
 the median f the data set is:
-```{r medsuma, echo = TRUE}
+
+```r
     round(median(suma))
+```
+
+```
+## Error in median(suma): object 'suma' not found
 ```
 ##3. what is the average daily activity pattern?
 this is the time series plot of the 5 min interval and the nomber of step taken.
-```{r minIntervalo, echo = TRUE}
+
+```r
     minIntervalo <- tapply(data$steps, data$interval, mean, na.rm=T)
+```
+
+```
+## Error in data$interval: object of type 'closure' is not subsettable
+```
+
+```r
     plot(minIntervalo ~ unique(data$interval), type="l", xlab = "5-min interval")
 ```
 
+```
+## Error in eval(expr, envir, enclos): object 'minIntervalo' not found
+```
+
 the interval that contains the maximun number of step is:
-```{r maxminIntervalo, echo = TRUE}
+
+```r
   minIntervalo[which.max(minIntervalo)]
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'minIntervalo' not found
 ```
 ##4. Imputing missing values
 
 the total of missing values is:
-```{r na, echo = TRUE}
+
+```r
   na <- which(is.na(data$steps))
+```
+
+```
+## Error in data$steps: object of type 'closure' is not subsettable
+```
+
+```r
   length(na)
 ```
+
+```
+## Error in eval(expr, envir, enclos): object 'na' not found
+```
 we change the na values in to the mean
-```{r na_for_mean, echo = TRUE}
+
+```r
   datalimp <- data  # creation of the dataset that will have no more NAs
   for (i in 1:nrow(data)){
       if(is.na(data$steps[i])){
           datalimp$steps[i]<- minIntervalo[[as.character(data[i, "interval"])]]
       }
   }
+```
+
+```
+## Error in 1:nrow(data): argument of length 0
+```
+
+```r
   summary(datalimp)
+```
+
+```
+## Error in object[[i]]: object of type 'closure' is not subsettable
 ```
 **The mean is the same, but the nedian is closer to the mean.**
 
 this is the histogram for the corresponding data:
-```{r hist2, echo = TRUE}
+
+```r
   suma2 <- tapply(datalimp$steps, datalimp$date, sum, na.rm=T)
+```
+
+```
+## Error in datalimp$date: object of type 'closure' is not subsettable
+```
+
+```r
   hist(suma2, xlab = "sum of steps per day", main = "histogram of steps per day")
+```
+
+```
+## Error in hist(suma2, xlab = "sum of steps per day", main = "histogram of steps per day"): object 'suma2' not found
 ```
 
 ##5. Are there differences in activity patterns between weekdays and weekends?
 Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
-```{r w_wd, echo = TRUE}
+
+```r
   datalimp$weekday <- c("weekday")
+```
+
+```
+## Error in datalimp$weekday <- c("weekday"): object of type 'closure' is not subsettable
+```
+
+```r
   datalimp[weekdays(as.Date(datalimp[, 2])) %in% c("Saturday", "Sunday", "sábado", "domingo"), ][4] <- c("weekend")
+```
+
+```
+## Error in datalimp[, 2]: object of type 'closure' is not subsettable
+```
+
+```r
 datalimp$weekday <- factor(datalimp$weekday)
+```
+
+```
+## Error in datalimp$weekday: object of type 'closure' is not subsettable
+```
+
+```r
 table(datalimp$weekday == "weekend")
 ```
-Now we separate the data in order to compare
-```{r sep_w_wd, echo = TRUE}
-datalimp_weekend <- subset(datalimp, datalimp$weekday == "weekend")
-datalimp_weekday <- subset(datalimp, datalimp$weekday == "weekday")
 
+```
+## Error in datalimp$weekday: object of type 'closure' is not subsettable
+```
+Now we separate the data in order to compare
+
+```r
+datalimp_weekend <- subset(datalimp, datalimp$weekday == "weekend")
+```
+
+```
+## Error in datalimp$weekday: object of type 'closure' is not subsettable
+```
+
+```r
+datalimp_weekday <- subset(datalimp, datalimp$weekday == "weekday")
+```
+
+```
+## Error in datalimp$weekday: object of type 'closure' is not subsettable
+```
+
+```r
 mean_datalimp_weekday <- tapply(datalimp_weekday$steps, datalimp_weekday$interval, mean)
+```
+
+```
+## Error in tapply(datalimp_weekday$steps, datalimp_weekday$interval, mean): object 'datalimp_weekday' not found
+```
+
+```r
 mean_datalimp_weekend <- tapply(datalimp_weekend$steps, datalimp_weekend$interval, mean)
 ```
+
+```
+## Error in tapply(datalimp_weekend$steps, datalimp_weekend$interval, mean): object 'datalimp_weekend' not found
+```
 then, we createa a plot for each data set. *It can be observed that there is a small difference between the period.*
-```{r plot_w_wd, echo = TRUE}
+
+```r
   df_weekday <- NULL
   df_weekend <- NULL
   df_final <- NULL
   df_weekday <- data.frame(interval = unique(datalimp_weekday$interval), avg = as.numeric(mean_datalimp_weekday),   day = rep("weekday", length(mean_datalimp_weekday)))
+```
+
+```
+## Error in unique(datalimp_weekday$interval): object 'datalimp_weekday' not found
+```
+
+```r
   df_weekend <- data.frame(interval = unique(datalimp_weekend$interval), avg = as.numeric(mean_datalimp_weekend), day = rep("weekend", length(mean_datalimp_weekend)))
+```
+
+```
+## Error in unique(datalimp_weekend$interval): object 'datalimp_weekend' not found
+```
+
+```r
   df_final <- rbind(df_weekday, df_weekend)
 library(lattice)
   xyplot(avg ~ interval | day, data = df_final, layout = c(1, 2), 
        type = "l", ylab = "Number of steps")
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'day' not found
 ```
